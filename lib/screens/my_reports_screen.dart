@@ -158,3 +158,80 @@ class MyReportsScreen extends StatelessWidget {
     );
   }
 }
+
+String? selectedAddress; // Keep this in your state
+
+Widget _locationPickerSection(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(14),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.04),
+          blurRadius: 6,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Set Location", style: TextStyle(fontWeight: FontWeight.w600)),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.map, color: Colors.teal),
+                label: Text("Select from Map"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal[50],
+                  foregroundColor: Colors.teal,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                onPressed: () async {
+                  // TODO: Open your map picker here and get coordinates
+                  // For example:
+                  // final coords = await Navigator.push(...);
+                  // setState(() { selectedAddress = "LatLng..."; });
+                },
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.my_location, color: Colors.teal),
+                label: Text("Current Location"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal[50],
+                  foregroundColor: Colors.teal,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+                onPressed: () async {
+                  // TODO: Get current device location using geolocator package
+                  // setState(() { selectedAddress = "LatLng..."; });
+                },
+              ),
+            ),
+          ],
+        ),
+        if (selectedAddress != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text(
+              "Selected: $selectedAddress",
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+          ),
+      ],
+    ),
+  );
+}
