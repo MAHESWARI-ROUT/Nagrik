@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nagrik/screens/issue_details_screen.dart';
 import '../controllers/report_controller.dart';
 import '../widgets/report_card.dart';
+import '../models/report.dart';
 
 class CityIssuesScreen extends StatefulWidget {
   const CityIssuesScreen({super.key});
@@ -23,7 +25,7 @@ class _CityIssuesScreenState extends State<CityIssuesScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black87,
-        title: const Text("City Issues"),
+        title: const Text("Nagrik"),
         centerTitle: true,
       ),
       body: Column(
@@ -68,7 +70,7 @@ class _CityIssuesScreenState extends State<CityIssuesScreen> {
             ),
           ),
 
-          // Filter row remains unchanged...
+          // Filter row
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
             child: SingleChildScrollView(
@@ -88,6 +90,7 @@ class _CityIssuesScreenState extends State<CityIssuesScreen> {
               ),
             ),
           ),
+
           Expanded(
             child: Obx(() {
               if (controller.reports.isEmpty) {
@@ -98,7 +101,18 @@ class _CityIssuesScreenState extends State<CityIssuesScreen> {
                 itemCount: controller.reports.length,
                 itemBuilder: (context, index) {
                   final report = controller.reports[index];
-                  return ReportCard(report: report);
+                  return ReportCard(
+                    report: report,
+                    onTap: () {
+                      // Example: Navigate to details page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ReportDetailsScreen(report: report),
+                        ),
+                      );
+                    },
+                  );
                 },
               );
             }),
@@ -141,10 +155,10 @@ class _CityIssuesScreenState extends State<CityIssuesScreen> {
                     ),
                   ),
                   ...filteredCities.map((city) => ListTile(
-                    leading: Icon(Icons.location_city),
-                    title: Text(city),
-                    onTap: () => Navigator.pop(context, city),
-                  )),
+                        leading: const Icon(Icons.location_city),
+                        title: Text(city),
+                        onTap: () => Navigator.pop(context, city),
+                      )),
                   const SizedBox(height: 12),
                 ],
               ),
@@ -157,8 +171,10 @@ class _CityIssuesScreenState extends State<CityIssuesScreen> {
     if (result != null && result != selectedCity) {
       setState(() {
         selectedCity = result;
-        // (Optional): Call a controller/API to fetch city-specific reports here!
+        // Optionally, fetch city-specific reports
       });
     }
   }
 }
+
+// Simple details screen example

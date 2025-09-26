@@ -8,7 +8,6 @@ import '../controllers/report_controller.dart';
 import '../models/report.dart';
 
 import '../constants/app_constants.dart';
-// Add import for audio packages if necessary (not included here)
 
 class ReportIssueScreen extends StatefulWidget {
   const ReportIssueScreen({super.key});
@@ -206,63 +205,41 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
   @override
   Widget build(BuildContext context) {
     final ReportController controller = Get.find<ReportController>();
-    final categories = ["Roads", "Public Safety", "Parks", "Trash", "Graffiti"];
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: const Text("Report New Issue"),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black87,
-        elevation: 0,
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Report New Issue")),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               GestureDetector(
                 onTap: _pickImage,
                 child: Container(
-                  height: 120,
+                  height: 150,
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.teal, width: 1.2),
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade400),
                   ),
-                  child: Center(
-                    child: _image != null
-                        ? ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.file(_image!,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: 120),
-                    )
-                        : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.photo_camera_outlined, size: 36, color: Colors.grey[700]),
-                        const SizedBox(width: 18),
-                        Icon(Icons.cloud_upload_outlined, size: 36, color: Colors.teal),
-                      ],
-                    ),
-                  ),
+                  child: _image != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.file(_image!, fit: BoxFit.cover),
+                        )
+                      : const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.camera_alt, size: 50, color: Colors.grey),
+                            SizedBox(height: 8),
+                            Text("Add Photo/Video"),
+                          ],
+                        ),
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                "Add Photo/Video",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey[800],
-                  fontSize: 16,
-                ),
-              ),
-              const SizedBox(height: 8),
-              // Title input
+              const SizedBox(height: 20),
               TextFormField(
                 controller: titleController,
                 decoration: InputDecoration(
@@ -279,136 +256,63 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                 validator: (val) => val == null || val.isEmpty ? "Enter a title" : null,
                 style: const TextStyle(fontWeight: FontWeight.w500),
               ),
+              TextFormField(
+                controller: descriptionController,
+                decoration: const InputDecoration(labelText: "Description"),
+                maxLines: 3,
+              ),
+              DropdownButtonFormField<String>(
+                value: selectedCategory,
+                items: ["Roads", "Public Safety", "Parks", "Trash", "Graffiti"]
+                    .map((c) => DropdownMenuItem(value: c, child: Text(c)))
+                    .toList(),
+                onChanged: (val) => setState(() => selectedCategory = val!),
+                decoration: const InputDecoration(labelText: "Category"),
+              ),
               const SizedBox(height: 20),
-
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey[200]!),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: TextFormField(
-                  controller: descriptionController,
-                  maxLines: 2,
-                  decoration: const InputDecoration(
-                    hintText: "Describe the issue…",
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-              _voiceNoteInput(),
-              const SizedBox(height: 8),
-              Container(
-                height: 28,
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Text(
-                      "Map View",
-                      style: TextStyle(fontSize: 13, color: Colors.blueGrey[400]),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 18),
-              _currentLocationSection(),
-              const SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Category:", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Colors.grey[700])),
-              ),
-              const SizedBox(height: 5),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey[200]!),
-                ),
-                child: DropdownButtonFormField<String>(
-                  value: selectedCategory,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                  items: categories
-                      .map((c) =>
-                      DropdownMenuItem(value: c, child: Text(c)))
-                      .toList(),
-                  onChanged: (val) => setState(() => selectedCategory = val!),
-                  isExpanded: true,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text("Description:", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15, color: Colors.grey[700])),
-              ),
-              const SizedBox(height: 5),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text("Low", style: TextStyle(color: Colors.grey)),
-                  Text("High", style: TextStyle(color: Colors.grey)),
-                ],
-              ),
+              Text("Severity: ${_severity.toStringAsFixed(1)}", style: Theme.of(context).textTheme.titleMedium),
               Slider(
                 value: _severity,
                 onChanged: (v) => setState(() => _severity = v),
                 min: 0,
                 max: 10,
                 divisions: 10,
-                activeColor: Colors.teal,
-                inactiveColor: Colors.teal.withOpacity(0.2),
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    foregroundColor: Colors.white,
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final report = Report(
-                        title: titleController.text,
-                        category: selectedCategory,
-                        status: "Submitted",
-                        date: DateTime.now(),
-                        description: descriptionController.text,
-                        severity: _severity,
-                        imagePath: _image?.path,
-                        // voiceNotePath: _voiceNoteFile?.path,  // Add to Report model if needed
-                        // latitude: _currentPosition?.latitude, // Add to Report model if needed
-                        // longitude: _currentPosition?.longitude, // Add to Report model if needed
-                        // landmark: _address, // Add to Report model if needed
-                      );
-                      controller.addReport(report);
-                      Get.back();
-                      Get.snackbar(
-                        "Success",
-                        "Report submitted successfully",
-                        snackPosition: SnackPosition.BOTTOM,
-                      );
-                    }
-                  },
-                  child: const Text(
-                    "Submit Report",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
-                  ),
-                ),
+                label: _severity.round().toString(),
+                onChanged: (double value) {
+                  setState(() {
+                    _severity = value;
+                  });
+                },
               ),
               const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppConstants.primaryBlue,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  foregroundColor: Colors.white
+                ),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final report = Report(
+                      title: titleController.text,
+                      category: selectedCategory,
+                      status: "Submitted", // New reports are always 'Submitted' first
+                      date: DateTime.now(),
+                      description: descriptionController.text,
+                      severity: _severity,
+                      imagePath: _image?.path,
+                    );
+                    controller.addReport(report);
+                    Get.back(); // Go back to the previous screen
+                    Get.snackbar(
+                      "Success",
+                      "Report submitted successfully",
+                       snackPosition: SnackPosition.BOTTOM,
+                    );
+                  }
+                },
+                child: const Text("Submit Report"),
+              )
             ],
           ),
         ),
