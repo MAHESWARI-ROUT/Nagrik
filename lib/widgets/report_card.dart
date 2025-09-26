@@ -4,7 +4,13 @@ import '../models/report.dart';
 
 class ReportCard extends StatelessWidget {
   final Report report;
-  const ReportCard({super.key, required this.report});
+  final VoidCallback? onTap; // Callback when card is tapped
+
+  const ReportCard({
+    super.key,
+    required this.report,
+    this.onTap,
+  });
 
   bool _isNetworkImage(String path) {
     return path.startsWith('http://') || path.startsWith('https://');
@@ -33,7 +39,7 @@ class ReportCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: () {},
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Row(
@@ -86,7 +92,9 @@ class ReportCard extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: report.status.toLowerCase() == "resolved"
                                   ? Colors.teal.withOpacity(0.15)
-                                  : Colors.amber.withOpacity(0.15),
+                                  : report.status.toLowerCase() == "in progress"
+                                      ? Colors.orange.withOpacity(0.15)
+                                      : Colors.blue.withOpacity(0.15),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
@@ -94,7 +102,9 @@ class ReportCard extends StatelessWidget {
                               style: TextStyle(
                                 color: report.status.toLowerCase() == "resolved"
                                     ? Colors.teal
-                                    : Colors.orange,
+                                    : report.status.toLowerCase() == "in progress"
+                                        ? Colors.orange
+                                        : Colors.blue,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
                               ),
@@ -155,7 +165,7 @@ class ReportCard extends StatelessWidget {
 
   Widget _buildImage(String path) {
     if (path.isEmpty) {
-      return Container(color: Colors.grey[200]); // Placeholder
+      return Container(color: Colors.grey[200]);
     }
     if (_isNetworkImage(path)) {
       return Image.network(
