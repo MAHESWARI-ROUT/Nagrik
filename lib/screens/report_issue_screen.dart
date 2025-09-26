@@ -93,6 +93,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                 min: 0,
                 max: 10,
                 divisions: 10,
+                activeColor: AppConstants.orange,
                 label: _severity.round().toString(),
                 onChanged: (double value) {
                   setState(() {
@@ -103,7 +104,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppConstants.primaryBlue,
+                  backgroundColor: AppConstants.lightGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   foregroundColor: Colors.white
                 ),

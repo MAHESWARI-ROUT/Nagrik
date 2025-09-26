@@ -23,7 +23,7 @@ class _CityIssuesScreenState extends State<CityIssuesScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black87,
-        title: const Text("City Issues"),
+        title: const Text("Nagrik"),
         centerTitle: true,
       ),
       body: Column(

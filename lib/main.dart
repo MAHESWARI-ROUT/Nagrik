@@ -55,7 +55,8 @@ class _MainNavigationState extends State<MainNavigation> {
       body: screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: AppConstants.primaryBlue,
+        selectedItemColor: AppConstants.orange,
+        unselectedItemColor: AppConstants.lightGreen,
         onTap: (index) => setState(() => _currentIndex = index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.public), label: 'City Issues'),
