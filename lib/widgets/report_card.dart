@@ -48,6 +48,7 @@ class ReportCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 14),
+
                 // Report Info
                 Expanded(
                   child: Column(
@@ -55,22 +56,33 @@ class ReportCard extends StatelessWidget {
                     children: [
                       Text(
                         report.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          // Report category (dot + text)
-                          Icon(Icons.circle, color: Colors.teal, size: 10),
+                          const Icon(Icons.circle, color: Colors.teal, size: 10),
                           const SizedBox(width: 6),
-                          Text(
-                            report.category,
-                            style: const TextStyle(fontSize: 13, color: Colors.grey),
+                          Flexible(
+                            child: Text(
+                              report.category,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                           const SizedBox(width: 12),
-                          // Status tag
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
                               color: report.status.toLowerCase() == "resolved"
                                   ? Colors.teal.withOpacity(0.15)
@@ -86,6 +98,8 @@ class ReportCard extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -93,28 +107,42 @@ class ReportCard extends StatelessWidget {
                     ],
                   ),
                 ),
+
+                const SizedBox(width: 8),
+
                 // Trailing Info
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.arrow_upward, color: Colors.teal, size: 14),
-                        const SizedBox(width: 4),
-                        Text(
-                          "${report.severity} Upvotes",
-                          style: const TextStyle(color: Colors.teal, fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      "${"0.5"} miles", // Add 'distance' field to model
-                      style: const TextStyle(fontSize: 11, color: Colors.grey),
-                    ),
-                  ],
+                Flexible(
+                  flex: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.arrow_upward,
+                              color: Colors.teal, size: 14),
+                          const SizedBox(width: 4),
+                          Text(
+                            "${report.severity} Upvotes",
+                            style: const TextStyle(
+                                color: Colors.teal, fontSize: 12),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        "${"0.5"} miles", // replace with report.distance if added
+                        style: const TextStyle(
+                            fontSize: 11, color: Colors.grey),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
+
                 const SizedBox(width: 8),
                 Icon(Icons.chevron_right, color: Colors.grey[400]),
               ],
@@ -150,7 +178,8 @@ class ReportCard extends StatelessWidget {
     }
   }
 
-  Widget _errorBuilder(BuildContext context, Object error, StackTrace? stackTrace) {
+  Widget _errorBuilder(
+      BuildContext context, Object error, StackTrace? stackTrace) {
     return Container(color: Colors.grey[300]);
   }
 }
