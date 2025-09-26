@@ -28,7 +28,7 @@ class ReportController extends GetxController {
         date: DateTime.now().subtract(const Duration(days: 2)),
         description: "Large pothole causing traffic issues near the intersection.",
         severity: 8.0,
-        imagePath: 'assets/pothole.jpg', // Example asset path
+        imagePath: 'https://res.cloudinary.com/dzfx0uwka/image/upload/v1758831489/pothole_sxzhf7.jpg', // Example asset path
       ),
       Report(
         title: "Park Bench Damaged",
@@ -37,7 +37,7 @@ class ReportController extends GetxController {
         date: DateTime.now().subtract(const Duration(days: 5)),
         description: "A bench near the playground is broken and unsafe.",
         severity: 6.0,
-        imagePath: 'assets/bench.jpg', // Example asset path
+        imagePath: "https://res.cloudinary.com/dzfx0uwka/image/upload/v1758831490/bench_epxzey.jpg", // Example asset path
       ),
       Report(
         title: "Street Light Out",
@@ -46,7 +46,7 @@ class ReportController extends GetxController {
         date: DateTime.now().subtract(const Duration(days: 1)),
         description: "The streetlight at the corner of Oak & Pine is not working.",
         severity: 7.0,
-        imagePath: 'assets/light.jpg',
+        imagePath: 'https://res.cloudinary.com/dzfx0uwka/image/upload/v1758831489/light_e0p2jk.jpg',
       ),
     ]);
   }
